@@ -26,4 +26,8 @@ public class Tile {
     public int getCurrentLocation(){
         return this.currentLocation;
     }
+
+    public String toString(){
+        return String.format( "Color: %c%nLocation: %d", color, currentLocation );
+    }
 }

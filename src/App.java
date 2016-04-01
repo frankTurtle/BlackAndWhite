@@ -5,7 +5,7 @@ public class App {
     public static void main( String[] args ){
         Board newBoard = new Board();
 
-        newBoard.printBoard();
+        System.out.println( newBoard );
     }
 
 }

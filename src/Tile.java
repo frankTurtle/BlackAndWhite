@@ -38,7 +38,6 @@ public class Tile {
     // Overridden toString
     // returns a formatted string with the color and location in board
     public String toString(){
-        return String.format( "Color: %c%nLocation: %d%n" +
-                "", color, currentLocation );
+        return String.format( "Color: %c%nLocation: %d%n", color, currentLocation );
     }
 }

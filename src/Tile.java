@@ -4,7 +4,7 @@
  * contains the color and current location in the board
  */
 
-public class Tile {
+public class Tile implements Cloneable {
     private char color; //.......... private instance variable to hold the color
     private int currentLocation; //. private instance variable to hold the current location in the board
 
@@ -39,5 +39,22 @@ public class Tile {
     // returns a formatted string with the color and location in board
     public String toString(){
         return String.format( "Color: %c%nLocation: %d%n", color, currentLocation );
+    }
+
+    // Overridden method to clone the object
+    protected Object clone() {
+        Tile clone = null; //...................................... cloned Tile object to return
+
+        try {
+            clone = (Tile)super.clone(); //........................ call super class
+        }
+        catch (CloneNotSupportedException e) {
+            // This should never happen
+        }
+
+        clone.setCurrentLocation( this.getCurrentLocation() ); //.. deep copy instance variables
+        clone.setColor( this.getColor() );
+
+        return clone;
     }
 }

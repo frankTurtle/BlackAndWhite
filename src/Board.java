@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class Board {
+public class Board implements Cloneable{
     private final int BOARD_SIZE = 7; //............... the board size
     private final String LEFT = "LEFT"; //............. used for the hash table left side costs
     private final String RIGHT = "RIGHT"; //........... used for the hast table right side costs
@@ -38,6 +38,12 @@ public class Board {
         this.solved = answer;
     }
 
+    // Method to set the board of tiles
+    public void setBoard( Tile[] boardIn ) {
+        this.board = boardIn.clone();
+    }
+
+    // Setter method for empty location
     public void setEmptyLocation( int location ){
         this.emptyLocation = location;
     }
@@ -126,6 +132,11 @@ public class Board {
         return availableMoves;
     }
 
+    // Method to return the empty tile
+    public int getEmptyLocation(){
+        return this.emptyLocation;
+    }
+
     // Method to make a move if its valid
     // takes the index where it's attempting to make the move from
     // updates empty location value once completed
@@ -155,6 +166,24 @@ public class Board {
         System.arraycopy( this.board, 0, returnBoard, 0, this.board.length ); //.. copy from the instance variable
 
         return returnBoard;
+    }
+
+    // Overridden method to clone the current board object
+    protected Object clone() {
+        Board clone = null; //............................. create the new board object to return
+
+        try {
+            clone = (Board)super.clone(); //............... create a new object from super class
+        }
+        catch (CloneNotSupportedException e) {
+            // This should never happen
+        }
+
+        clone.setEmptyLocation( this.emptyLocation ); //... deep copy instance variables
+        clone.setBoard( this.board );
+        clone.setSolved( this.getSolved() );
+
+        return clone;
     }
 
 

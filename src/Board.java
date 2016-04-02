@@ -5,6 +5,7 @@
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 public class Board {
@@ -15,8 +16,8 @@ public class Board {
     private Tile[] board = new Tile[ BOARD_SIZE ]; //.. private instance variable to hold the board of Tile objects
     private boolean solved; //......................... private instance variable to determine when board is solved
     private int emptyLocation; //...................... private instance variable to hold the empty location
-    private int gValue;
-    private int hValue;
+    private int gValue; //............................. private instance variable to hold the g value of the board
+    private int hValue; //............................. private instance variable to hold the h value of the board
 
     // Default constructor
     // builds the board as follows:
@@ -29,6 +30,7 @@ public class Board {
             else board[i] = ( i < 3 ) ? new Tile( 'B', i ) : new Tile( 'W', i ); //... create the W or B tiles
         }
         this.setEmptyLocation( 3 ); //................................................ sets the empty location
+        this.setgValue(); //.......................................................... sets the gValue
     }
 
     // Setter method to set if the board is solved
@@ -41,8 +43,51 @@ public class Board {
     }
 
     // Method to calculate the gValue
+    // loops through the entire board and compares the index to the known index's of the goal state
+    // adds up the number of spaces out of position
     public void setgValue(){
+        char color; //.......................................................................................................... variable to hold the current tile's color
+        int totalgValue = 0; //................................................................................................. temp variable to add up all out of place tiles
+        LinkedList<Integer> indexW = new LinkedList<>(); //..................................................................... list of known indexes for W tiles
+        LinkedList<Integer> indexB = new LinkedList<>(); //..................................................................... list of known indexes for B tiles
 
+        indexW.add(0); //....................................................................................................... add known indexes to all lists
+        indexW.add(1);
+        indexW.add(2);
+
+        indexB.add(6);
+        indexB.add(5);
+        indexB.add(4);
+
+        for( int i = 0; i < this.board.length; i++ ){ //........................................................................ loop through each Tile in the board
+            color = this.board[ i ].getColor(); //.............................................................................. gets the color
+
+            if( i < 3 && color == 'B' ){ //..................................................................................... this is where the W's go, check if its a B
+                totalgValue += this.gValueHelper( indexB, 'B', i );
+            }
+            else if( i == 3 && color != 'E' ){ //............................................................................... if its not blank spot where it supposed to be
+                totalgValue += ( color == 'B' ) ? this.gValueHelper( indexB, 'B', i ) : this.gValueHelper( indexW, 'W', i ); //. assigns value appropriately based on W or B color
+            }
+            else if( i > 3 && color == 'W' ){ //................................................................................ this is where the B's go, check if its a W
+                totalgValue += this.gValueHelper( indexW, 'W', i );
+            }
+        }
+
+        this.gValue += totalgValue; //.......................................................................................... set the gValue instance variable for this board
+    }
+
+    // Method to loop through the list and get the value to add for the g value
+    private int gValueHelper( LinkedList<Integer> list, char compareTo, int currentIndex ){
+        int returnInt = 0; //................................................................. int to return
+
+        for( Integer index : list ){ //....................................................... loop through each index in the list passed in
+            if( this.board[ index ].getColor() !=  compareTo ) { //........................... if colors are the same
+                returnInt += Math.abs( index - currentIndex ); //............................. copy index value to return, and remove from the list
+                list.remove( index ); //...................................................... remove the item from the list to cut down on list looping
+                break;
+            }
+        }
+        return returnInt;
     }
 
     // Method to return all available moves
@@ -79,6 +124,11 @@ public class Board {
         availableMoves.put( RIGHT, costsRight );
 
         return availableMoves;
+    }
+
+    // Method to get the gValue
+    public int getgValue(){
+        return this.gValue;
     }
 
     // Method to get the board

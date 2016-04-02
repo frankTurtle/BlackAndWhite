@@ -7,8 +7,9 @@ public class App {
     public static void main( String[] args ){
         Board newBoard = new Board();
 
-        System.out.println(Arrays.toString(newBoard.getBoard()) );
+//        System.out.println(Arrays.toString(newBoard.getBoard()) );
 //        System.out.println( newBoard.getAvailableMoves().keySet() );
+        System.out.println( newBoard.getgValue() );
     }
 
 }

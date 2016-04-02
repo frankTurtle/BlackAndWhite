@@ -10,7 +10,7 @@ import java.util.Map;
 public class Board {
     private final int BOARD_SIZE = 7; //............... the board size
     private final String LEFT = "LEFT"; //............. used for the hash table left side costs
-    private final String RIGHT = "RIGHT"; //........... used for the hast tabel right side costs
+    private final String RIGHT = "RIGHT"; //........... used for the hast table right side costs
 
     private Tile[] board = new Tile[ BOARD_SIZE ]; //.. private instance variable to hold the board of Tile objects
     private boolean solved; //......................... private instance variable to determine when board is solved
@@ -74,12 +74,27 @@ public class Board {
         return availableMoves;
     }
 
+    // Method to return the state of the board ( solved or not )
+    public boolean getSolved(){
+        return solved;
+    }
+
     // Overridden toString
     // prints out the current board
-    public String toString(){
-        String returnString = "";
-        for( Tile tile : board ){ returnString += tile; }
+//    public String toString(){
+//        String returnString = ""; //......................... create an empty string
+//        for( Tile tile : board ){ returnString += tile; } //. loop through every tile in the board and concatenate tile toString
+//
+//        return returnString;
+//    }
 
+    // Overridden toString alternative
+    // prints out the board in a more user friendly format
+    public String toString(){
+        String returnString = "[ "; //.......................................... create the beginning of the string
+        for( Tile tile : board ){ returnString += tile.getColor() + ", "; } //.. loop through each tile in the board and get the color
+        returnString = returnString.substring( 0, returnString.length()-2 ); //. cut the ending space and comma off
+        returnString += " ]"; //................................................ add closing brace
         return returnString;
     }
 }

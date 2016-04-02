@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 /**
  * Created by Barret J. Nobel on 3/31/2016.
  */
@@ -8,8 +6,14 @@ public class App {
         Board newBoard = new Board();
 
 //        System.out.println(Arrays.toString(newBoard.getBoard()) );
-//        System.out.println( newBoard.getAvailableMoves().keySet() );
-        System.out.println( newBoard.getgValue() );
+//        System.out.println( newBoard.getAvailableMoves().values() );
+//        System.out.println( newBoard.getgValue() );
+
+        boolean answer = newBoard.makeAMove( 0 );
+        answer = newBoard.makeAMove( 1 );
+        answer = newBoard.makeAMove( 0 );
+//        System.out.println( answer );
+        System.out.println( newBoard );
     }
 
 }

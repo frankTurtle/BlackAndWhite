@@ -94,16 +94,16 @@ public class Board {
     // in the hashing format of < direction, cost >
     public Map getAvailableMoves() {
         Map<String, ArrayList<Integer>> availableMoves = new HashMap<String, ArrayList<Integer>>(); //.. variable to store the available moves with their cost
-        ArrayList<Integer> costsRight = new ArrayList<>(); //........................................... arrayList for the right side of costs
-        ArrayList<Integer> costsLeft = new ArrayList<>(); //............................................ arrayList for the left side of costs
+        ArrayList<Integer> costsRight = new ArrayList<Integer>(); //........................................... arrayList for the right side of costs
+        ArrayList<Integer> costsLeft = new ArrayList<Integer>(); //............................................ arrayList for the left side of costs
 
         if (emptyLocation < 3) { //..................................................................... where is the empty value in the board?
-            costsLeft.add(3);
-            costsLeft.add(3);
-            costsLeft.add(3);
-            costsRight.add(2);
-            costsRight.add(1);
-            costsRight.add(0);
+            costsLeft.add(1);
+            costsLeft.add(1);
+            costsLeft.add(2);
+            for( int i = 0; i < this.emptyLocation; i++ ){
+                costsRight.add( (i == 0 || i == 1) ? 1 : 2 );
+            }
         } else if (emptyLocation == 3) { //............................................................. goal location
             costsLeft.add(1);
             costsLeft.add(1);
@@ -112,18 +112,36 @@ public class Board {
             costsRight.add(1);
             costsRight.add(2);
         } else { //..................................................................................... empty square is in the right half
-            costsLeft.add(2);
-            costsLeft.add(1);
-            costsLeft.add(0);
-            costsLeft.add(3);
-            costsLeft.add(3);
-            costsLeft.add(3);
+            for( int i = BOARD_SIZE - 1 ; i > this.emptyLocation; i-- ){
+                costsLeft.add( (i == BOARD_SIZE - 1 || i == BOARD_SIZE - 2) ? 1 : 2 );
+            }
+            costsRight.add(1);
+            costsRight.add(1);
+            costsRight.add(2);
         }
 
         availableMoves.put( LEFT, costsLeft ); //...................................................... put all the counts into the hash with the names
         availableMoves.put( RIGHT, costsRight );
 
         return availableMoves;
+    }
+
+    // Method to make a move if its valid
+    // takes the index where it's attempting to make the move from
+    // updates empty location value once completed
+    // returns true or false if it's not a valid move
+    public boolean makeAMove( int fromIndex ) {
+        int difference = Math.abs(this.emptyLocation - fromIndex); //. get the absolute value between the empty one and the one wanting to move
+        boolean returnIfValid = !( difference > 3 ); //............... if its over 3 then it's not a valid move
+
+        if( returnIfValid ){ //....................................... if its valid, swap them
+            Tile temp = this.board[ fromIndex ];
+            this.board[ fromIndex ] = this.board[ emptyLocation ];
+            this.board[ emptyLocation ] = temp;
+            this.setEmptyLocation( temp.getCurrentLocation() ); //.... and update the location of the empty tile
+        }
+
+        return returnIfValid;
     }
 
     // Method to get the gValue

@@ -30,7 +30,6 @@ public class App {
     // returns an array of boards!
     private static ArrayList<Board> generateBoards( Board currentBoard ){
         ArrayList<Board> returnArray = new ArrayList<>(); //....................................... array of Board objects to return
-//        Board clone = (Board)currentBoard.clone(); //............................................ clone of the board to generate from
         ArrayList<Integer> left = (ArrayList)currentBoard.getAvailableMoves().get( LEFT ); //...... get all moves to the left
         ArrayList<Integer> right = (ArrayList)currentBoard.getAvailableMoves().get( RIGHT ); //.... get all moves to the left
 

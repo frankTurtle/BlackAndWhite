@@ -15,6 +15,8 @@ public class Board {
     private Tile[] board = new Tile[ BOARD_SIZE ]; //.. private instance variable to hold the board of Tile objects
     private boolean solved; //......................... private instance variable to determine when board is solved
     private int emptyLocation; //...................... private instance variable to hold the empty location
+    private int gValue;
+    private int hValue;
 
     // Default constructor
     // builds the board as follows:

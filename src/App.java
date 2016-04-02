@@ -21,22 +21,31 @@ public class App {
 //        System.out.println( answer );
 //        System.out.println( newBoard );
 
-        generateBoards( newBoard );
+        for( Board potentialMove : generateBoards( newBoard ) ){
+            System.out.println( potentialMove + " " + potentialMove.getgValue());
+        }
     }
 
     // Method to generate all the boards from the moves in the hash
     // returns an array of boards!
-    private static Board[] generateBoards( Board currentBoard ){
-        Board[] returnArray = new Board[6]; //................................................... array of Board objects to return
-        Board clone = (Board)currentBoard.clone(); //............................................ clone of the board to generate from
-        ArrayList<Integer> left = (ArrayList)currentBoard.getAvailableMoves().get( LEFT ); //.... get all moves to the left
+    private static ArrayList<Board> generateBoards( Board currentBoard ){
+        ArrayList<Board> returnArray = new ArrayList<>(); //....................................... array of Board objects to return
+//        Board clone = (Board)currentBoard.clone(); //............................................ clone of the board to generate from
+        ArrayList<Integer> left = (ArrayList)currentBoard.getAvailableMoves().get( LEFT ); //...... get all moves to the left
+        ArrayList<Integer> right = (ArrayList)currentBoard.getAvailableMoves().get( RIGHT ); //.... get all moves to the left
 
-        for( int i = 0; i < left.size() - 1; i++ ){ //........................................... loop through all moves left
-//            System.out.println( "Before: " + currentBoard );
+        for( int i = 0; i < left.size(); i++ ){ //................................................. loop through all moves left
+            Board newBoard = (Board)currentBoard.clone();
+            if( newBoard.makeAMove(i + 1 + currentBoard.getEmptyLocation()) ) {
+                returnArray.add( newBoard );
+            }
+        }
 
-            currentBoard.makeAMove( i + 1 + currentBoard.getEmptyLocation() );
-
-//            System.out.println( "After: " + currentBoard );
+        for( int i = currentBoard.getEmptyLocation() - right.size() ; i < right.size(); i++ ){ //.. loop through all moves right
+            Board newBoard = (Board)currentBoard.clone();
+            if( newBoard.makeAMove(i) ){
+                returnArray.add( newBoard );
+            }
         }
 
         return returnArray;

@@ -114,9 +114,9 @@ public class Board implements Cloneable{
             costsLeft.add(1);
             costsLeft.add(1);
             costsLeft.add(2);
-            costsRight.add(1);
-            costsRight.add(1);
             costsRight.add(2);
+            costsRight.add(1);
+            costsRight.add(1);
         } else { //..................................................................................... empty square is in the right half
             for( int i = BOARD_SIZE - 1 ; i > this.emptyLocation; i-- ){
                 costsLeft.add( (i == BOARD_SIZE - 1 || i == BOARD_SIZE - 2) ? 1 : 2 );
@@ -150,6 +150,8 @@ public class Board implements Cloneable{
             this.board[ fromIndex ] = this.board[ emptyLocation ];
             this.board[ emptyLocation ] = temp;
             this.setEmptyLocation( temp.getCurrentLocation() ); //.... and update the location of the empty tile
+            this.gValue = 0; //....................................... reset g value to zero and set
+            this.setgValue();
         }
 
         return returnIfValid;
@@ -191,15 +193,6 @@ public class Board implements Cloneable{
     public boolean getSolved(){
         return solved;
     }
-
-    // Overridden toString
-    // prints out the current board
-//    public String toString(){
-//        String returnString = ""; //......................... create an empty string
-//        for( Tile tile : board ){ returnString += tile; } //. loop through every tile in the board and concatenate tile toString
-//
-//        return returnString;
-//    }
 
     // Overridden toString alternative
     // prints out the board in a more user friendly format

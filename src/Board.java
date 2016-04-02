@@ -20,7 +20,7 @@ public class Board {
 
     // Default constructor
     // builds the board as follows:
-    // [ W, W, W, Empty , B, B, B ]
+    // [ B, B, B, Empty , W, W, W ]
     // Also sets the board solved to false
     public Board(){
         this.setSolved( false ); //................................................... sets solved state to false
@@ -38,6 +38,11 @@ public class Board {
 
     public void setEmptyLocation( int location ){
         this.emptyLocation = location;
+    }
+
+    // Method to calculate the gValue
+    public void setgValue(){
+
     }
 
     // Method to return all available moves
@@ -75,6 +80,15 @@ public class Board {
 
         return availableMoves;
     }
+
+    // Method to get the board
+    public Tile[] getBoard(){
+        Tile[] returnBoard = new Tile[ this.board.length ]; //.................... create a new board to return
+        System.arraycopy( this.board, 0, returnBoard, 0, this.board.length ); //.. copy from the instance variable
+
+        return returnBoard;
+    }
+
 
     // Method to return the state of the board ( solved or not )
     public boolean getSolved(){

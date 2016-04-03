@@ -22,13 +22,16 @@ public class App {
 //        System.out.println( newBoard );
 
         for( Board potentialMove : generateBoards( newBoard ) ){
-            System.out.println( potentialMove + " " + potentialMove.getgValue());
+            System.out.println( potentialMove + " " + potentialMove.gethValue());
         }
     }
 
     // Method to generate all the boards from the moves in the hash
     // returns an array of boards!
     private static ArrayList<Board> generateBoards( Board currentBoard ){
+
+        System.out.println( currentBoard );
+
         ArrayList<Board> returnArray = new ArrayList<>(); //....................................... array of Board objects to return
         ArrayList<Integer> left = (ArrayList)currentBoard.getAvailableMoves().get( LEFT ); //...... get all moves to the left
         ArrayList<Integer> right = (ArrayList)currentBoard.getAvailableMoves().get( RIGHT ); //.... get all moves to the left
@@ -40,7 +43,7 @@ public class App {
             }
         }
 
-        for( int i = currentBoard.getEmptyLocation() - right.size() ; i < right.size(); i++ ){ //.. loop through all moves right
+        for( int i = currentBoard.getEmptyLocation() - right.size(); i < right.size(); i++ ){ //... loop through all moves right
             Board newBoard = (Board)currentBoard.clone();
             if( newBoard.makeAMove(i) ){
                 returnArray.add( newBoard );

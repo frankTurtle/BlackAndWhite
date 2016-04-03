@@ -38,6 +38,11 @@ public class Board implements Cloneable{
         this.solved = answer;
     }
 
+    // Method to set the hValue
+    public void sethValue( int hValue ){
+        this.hValue = hValue;
+    }
+
     // Method to set the board of tiles
     public void setBoard( Tile[] boardIn ) {
         this.board = boardIn.clone();
@@ -79,7 +84,7 @@ public class Board implements Cloneable{
             }
         }
 
-        this.gValue += totalgValue; //.......................................................................................... set the gValue instance variable for this board
+        this.gValue = totalgValue; //.......................................................................................... set the gValue instance variable for this board
     }
 
     // Method to loop through the list and get the value to add for the g value
@@ -87,7 +92,7 @@ public class Board implements Cloneable{
         int returnInt = 0; //................................................................. int to return
 
         for( Integer index : list ){ //....................................................... loop through each index in the list passed in
-            if( this.board[ index ].getColor() !=  compareTo ) { //........................... if colors are the same
+            if( this.board[ index ].getColor() !=  compareTo ) { //........................... if colors are not the same
                 returnInt += Math.abs( index - currentIndex ); //............................. copy index value to return, and remove from the list
                 list.remove( index ); //...................................................... remove the item from the list to cut down on list looping
                 break;
@@ -100,8 +105,8 @@ public class Board implements Cloneable{
     // in the hashing format of < direction, cost >
     public Map getAvailableMoves() {
         Map<String, ArrayList<Integer>> availableMoves = new HashMap<String, ArrayList<Integer>>(); //.. variable to store the available moves with their cost
-        ArrayList<Integer> costsRight = new ArrayList<Integer>(); //........................................... arrayList for the right side of costs
-        ArrayList<Integer> costsLeft = new ArrayList<Integer>(); //............................................ arrayList for the left side of costs
+        ArrayList<Integer> costsRight = new ArrayList<Integer>(); //.................................... arrayList for the right side of costs
+        ArrayList<Integer> costsLeft = new ArrayList<Integer>(); //..................................... arrayList for the left side of costs
 
         if (emptyLocation < 3) { //..................................................................... where is the empty value in the board?
             costsLeft.add(1);
@@ -126,7 +131,7 @@ public class Board implements Cloneable{
             costsRight.add(2);
         }
 
-        availableMoves.put( LEFT, costsLeft ); //...................................................... put all the counts into the hash with the names
+        availableMoves.put( LEFT, costsLeft ); //....................................................... put all the counts into the hash with the names
         availableMoves.put( RIGHT, costsRight );
 
         return availableMoves;
@@ -142,15 +147,16 @@ public class Board implements Cloneable{
     // updates empty location value once completed
     // returns true or false if it's not a valid move
     public boolean makeAMove( int fromIndex ) {
+        int[] cost = { 1, 1, 2 }; //.................................. value of all costs
         int difference = Math.abs(this.emptyLocation - fromIndex); //. get the absolute value between the empty one and the one wanting to move
         boolean returnIfValid = !( difference > 3 ); //............... if its over 3 then it's not a valid move
 
         if( returnIfValid ){ //....................................... if its valid, swap them
+            this.sethValue( cost[difference - 1] ); //................ sets the H Value
             Tile temp = this.board[ fromIndex ];
             this.board[ fromIndex ] = this.board[ emptyLocation ];
             this.board[ emptyLocation ] = temp;
             this.setEmptyLocation( temp.getCurrentLocation() ); //.... and update the location of the empty tile
-            this.gValue = 0; //....................................... reset g value to zero and set
             this.setgValue();
         }
 
@@ -162,7 +168,13 @@ public class Board implements Cloneable{
         return this.gValue;
     }
 
+    // Method to return the hValue
+    public int gethValue(){
+        return this.hValue;
+    }
+
     // Method to get the board
+    // UPDATE: THIS IS A SHALLOW COPY
     public Tile[] getBoard(){
         Tile[] returnBoard = new Tile[ this.board.length ]; //.................... create a new board to return
         System.arraycopy( this.board, 0, returnBoard, 0, this.board.length ); //.. copy from the instance variable

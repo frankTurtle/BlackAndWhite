@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class Board implements Cloneable{
+public class Board implements Cloneable, Comparable{
     private final int BOARD_SIZE = 7; //............... the board size
     private final String LEFT = "LEFT"; //............. used for the hash table left side costs
     private final String RIGHT = "RIGHT"; //........... used for the hast table right side costs
@@ -214,5 +214,22 @@ public class Board implements Cloneable{
         returnString = returnString.substring( 0, returnString.length()-2 ); //. cut the ending space and comma off
         returnString += " ]"; //................................................ add closing brace
         return returnString;
+    }
+
+    public int getfValue(){
+        return this.getgValue() + this.gethValue();
+    }
+
+    public int compareTo( Object compareToBoard ) {
+        Board tmp = (Board)compareToBoard;
+
+//        System.out.printf( "tmp: %d %nthis: %d%n%n", tmp.getfValue(), this.getfValue() );
+
+        if( this.getfValue() > tmp.getfValue() )
+            return 1;
+        else if( this.getfValue() == tmp.getfValue() )
+            return 0;
+        else
+            return -1;
     }
 }

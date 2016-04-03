@@ -3,6 +3,7 @@
  */
 
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 public class App {
     private static final String LEFT = "LEFT"; //............. used for the hash table left side costs
@@ -10,6 +11,7 @@ public class App {
 
     public static void main( String[] args ){
         Board newBoard = new Board();
+        PriorityQueue<Board> open = new PriorityQueue<>();
 
 //        System.out.println(Arrays.toString(newBoard.getBoard()) );
 //        System.out.println( newBoard.getAvailableMoves().values() );
@@ -22,15 +24,25 @@ public class App {
 //        System.out.println( newBoard );
 
         for( Board potentialMove : generateBoards( newBoard ) ){
-            System.out.println( potentialMove + " " + potentialMove.gethValue());
+            System.out.println( potentialMove + " " + potentialMove.getfValue());
+            open.add( potentialMove );
         }
+
+//        System.out.println( open );
+        Board tmp = open.remove();
+        System.out.println( "\n" + tmp + " " + tmp.getfValue());
+        tmp = open.remove();
+        System.out.println( "\n" + tmp + " " + tmp.getfValue());
+//        System.out.println( open );
+//        System.out.println( open.poll() );
+//        System.out.println( open );
     }
 
     // Method to generate all the boards from the moves in the hash
     // returns an array of boards!
     private static ArrayList<Board> generateBoards( Board currentBoard ){
 
-        System.out.println( currentBoard );
+        System.out.println( currentBoard + " " + currentBoard.gethValue());
 
         ArrayList<Board> returnArray = new ArrayList<>(); //....................................... array of Board objects to return
         ArrayList<Integer> left = (ArrayList)currentBoard.getAvailableMoves().get( LEFT ); //...... get all moves to the left

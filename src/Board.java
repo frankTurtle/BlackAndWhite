@@ -3,10 +3,7 @@
  * Class to create a board to hold the Tile objects
  */
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 public class Board implements Cloneable, Comparable{
     private final int BOARD_SIZE = 7; //............... the board size
@@ -28,6 +25,15 @@ public class Board implements Cloneable, Comparable{
         for( int i = 0; i < BOARD_SIZE; i++ ){ //..................................... loop through the board and create new tile objects
             if( i == 3 )board[i] = new Tile( 'E', i ); //............................. set the empty location to the middle
             else board[i] = ( i < 3 ) ? new Tile( 'B', i ) : new Tile( 'W', i ); //... create the W or B tiles
+        }
+        this.setEmptyLocation( 3 ); //................................................ sets the empty location
+        this.setgValue(); //.......................................................... sets the gValue
+    }
+
+    public Board( char[] tiles ){
+        this.setSolved( false ); //................................................... sets solved state to false
+        for( int i = 0; i < BOARD_SIZE; i++ ){ //..................................... loop through the board and create new tile objects
+            board[i] = new Tile( tiles[i], i );
         }
         this.setEmptyLocation( 3 ); //................................................ sets the empty location
         this.setgValue(); //.......................................................... sets the gValue
@@ -85,6 +91,11 @@ public class Board implements Cloneable, Comparable{
         }
 
         this.gValue = totalgValue; //.......................................................................................... set the gValue instance variable for this board
+    }
+
+    // Method to set the g value based on teh value passed in
+    public void setgValue( int valueToSet ){
+        this.gValue = valueToSet;
     }
 
     // Method to loop through the list and get the value to add for the g value
@@ -216,14 +227,18 @@ public class Board implements Cloneable, Comparable{
         return returnString;
     }
 
+    // Method to return the calculated f value
+    // f(n) = g(n) + h(n)
     public int getfValue(){
         return this.getgValue() + this.gethValue();
     }
 
+    // Method to compare the object to this instance
+    // returns 1 if the instance f value is greater
+    // returns 0 if they're equal
+    // returns -1 if its anything else
     public int compareTo( Object compareToBoard ) {
         Board tmp = (Board)compareToBoard;
-
-//        System.out.printf( "tmp: %d %nthis: %d%n%n", tmp.getfValue(), this.getfValue() );
 
         if( this.getfValue() > tmp.getfValue() )
             return 1;
@@ -231,5 +246,16 @@ public class Board implements Cloneable, Comparable{
             return 0;
         else
             return -1;
+    }
+
+    // Method to compare two Board objects
+    public boolean equals( Object testThisBoard ){
+        if( testThisBoard == null ){ return  false; } //.................................. return false if point to null
+        if( !Board.class.isAssignableFrom(testThisBoard.getClass()) ){ return false; } //. if you can't assign it to a Board object
+
+        Board other = (Board) testThisBoard; //........................................... cast the object passed in to a Board
+
+        if( !Arrays.deepEquals(this.getBoard(), other.getBoard())){ return false; } //.... check to see if the board's are not equal
+        return true;
     }
 }
